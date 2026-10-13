@@ -26,7 +26,9 @@ jobs:
           gradle-version: '8.10.2'
       - name: Restore app icon image
         run: |
-          base64 -d app/src/main/res/drawable/bingo_icon.jpg.b64 > app/src/main/res/drawable/bingo_icon.jpg
+          base64 -d app/src/main/res/drawable/bingo_icon.jpg.b64 > /tmp/bingo_icon.jpg
+          rm app/src/main/res/drawable/bingo_icon.jpg.b64
+          mv /tmp/bingo_icon.jpg app/src/main/res/drawable/bingo_icon.jpg
       - name: Build debug APK
         run: gradle --no-daemon assembleDebug
       - name: Upload APK
