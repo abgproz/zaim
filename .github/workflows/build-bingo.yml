@@ -8,6 +8,7 @@ on:
       - 'build.gradle'
       - 'settings.gradle'
       - '.github/workflows/build-bingo.yml'
+      - 'app_icon.b64'
 
 jobs:
   build:
@@ -26,9 +27,10 @@ jobs:
           gradle-version: '8.10.2'
       - name: Restore app icon image
         run: |
-          base64 -d app/src/main/res/drawable/bingo_icon.jpg.b64 > /tmp/bingo_icon.jpg
-          rm app/src/main/res/drawable/bingo_icon.jpg.b64
-          mv /tmp/bingo_icon.jpg app/src/main/res/drawable/bingo_icon.jpg
+          mkdir -p app/src/main/res/drawable
+          base64 -d app_icon.b64 > app/src/main/res/drawable/bingo_icon.jpg
+          rm -f app_icon.b64
+          find app/src/main/res -type f -name '*.b64' -delete
       - name: Build debug APK
         run: gradle --no-daemon assembleDebug
       - name: Upload APK
